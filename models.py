@@ -29,3 +29,11 @@ class User(db.Model):
     image_url = db.Column(db.String(50),
                             nullable=False,
                             unique=True)
+
+    def __repr__(self):
+        u = self
+        return f"<User id={u.id} first_name={u.first_name} last_name={u.last_name} image_url={u.image_url}>"
+
+    def get_full_name(self):
+        u = self
+        return f"{u.first_name} {u.last_name}"

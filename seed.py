@@ -24,4 +24,4 @@ db.session.add(emma)
 db.session.add(buck)
 
 #db commit
-db.commit()
+db.session.commit()

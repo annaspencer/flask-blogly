@@ -8,7 +8,7 @@
 
     
     {% for user in users %}
-    <li><a href="/{{user.id}}">{{user.first_name}} {{user.last_name}}</a></li>
+    <li><a href="/{{user.id}}">{{user.get_full_name()}}</a></li>
     {% endfor %}
   
 <a href="/create-user" class="btn btn-info" role="button">Create User</a>

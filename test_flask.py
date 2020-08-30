@@ -12,6 +12,7 @@ app.config['TESTING'] = True
 
 # This is a bit of hack, but don't use Flask DebugToolbar
 app.config['DEBUG_TB_HOSTS'] = ['dont-show-debug-toolbar']
+app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False
 
 db.drop_all()
 db.create_all()
@@ -30,7 +31,7 @@ class UserViewsTestCase(TestCase):
         db.session.commit()
 
         self.user_id = elton.id
-        self.user = elton
+        
 
     def tearDown(self):
         """Clean up any fouled transaction."""
@@ -38,28 +39,39 @@ class UserViewsTestCase(TestCase):
         db.session.rollback()
 
     def test_list_users(self):
+        """tests /users route"""
         with app.test_client() as client:
-            resp = client.get("/")
+            resp = client.get("/users")
             html = resp.get_data(as_text=True)
 
             self.assertEqual(resp.status_code, 200)
-            self.assertIn('Elton', html)
+            self.assertIn('Users', html)
 
     def test_show_user(self):
+        """test user-details route"""
         with app.test_client() as client:
             resp = client.get(f"/{self.user_id}")
             html = resp.get_data(as_text=True)
 
             self.assertEqual(resp.status_code, 200)
-            self.assertIn('<h1>Elton</h1>', html)
-            self.assertIn(self.user.first_name, html)
+            self.assertIn('<h2>Elton John</h2>', html)
             
-
-    def test_add_user(self):
+    def test_create_user(self):
+        """tests create-users route"""
         with app.test_client() as client:
-            d = {"first_name":"Marshall", "last_name":"Mathers", "image_url":"https://unsplash.com/photos/fr8yMGRS_X8"}
-            resp = client.post("/", data=d, follow_redirects=True)
+            resp = client.get(f"/create-user")
             html = resp.get_data(as_text=True)
 
             self.assertEqual(resp.status_code, 200)
-            self.assertIn("<h1>Marshall</h1>", html)
+            self.assertIn('<h2>Create New User</h2>', html)
+
+    def test_edit_user(self):
+        """tests edit-user route"""
+        with app.test_client() as client:
+            resp = client.get(f"/{self.user_id}/edit")
+            html = resp.get_data(as_text=True)
+
+            self.assertEqual(resp.status_code, 200)
+            self.assertIn('<h2>Edit User</h2>', html)
+           
+
