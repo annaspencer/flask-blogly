@@ -7,7 +7,7 @@ from app import app
 db.drop_all()
 db.create_all()
 
-#If table isn't empty, then empty
+#If table isn't empty, then empty it
 User.query.delete()
 
 #add users
