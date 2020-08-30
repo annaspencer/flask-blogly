@@ -6,7 +6,7 @@ from models import db, connect_db, User
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = "891-327-672"
-debug = DebugToolbarExtension(app)
+# debug = DebugToolbarExtension(app)
 app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False
 app.debug =True
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///blogly'
@@ -25,25 +25,60 @@ def index():
 
 @app.route("/users")
 def users():
-    """users page"""
+    """users list page"""
+    users = User.query.all()
+    return render_template("/users.html", users=users)
 
-    return render_template("/users.html")
+@app.route('/create-user')
+def create_user_form():
+    """returns create user form."""
+    
 
-@app.route('/create_user', methods=["GET"])
-def create_user():
-    """Return create user page."""
+    return render_template("/create-user.html" )
 
-    return render_template("/create-user.html")
+@app.route('/create-user', methods=['POST'])
+def created_user():
+    """processes the create user form, adding a new user and going back to list."""
+    first_name = request.form['first_name']
+    last_name = request.form['last_name']
+    image_url = request.form['image_url']
 
+    new_user = User(first_name=first_name, last_name=last_name, image_url=image_url)
+    db.session.add(new_user)
+    db.session.commit()
 
-# @app.route('/user_details')
-# def user_details():
-#     """Return user details."""
+    return redirect(f"/{new_user.id}" )
 
-#     return render_template("/user-details.html")
+@app.route('/<int:user_id>')
+def user_details(user_id):
+    """Return user details"""
+    user = User.query.get_or_404(user_id)
+    return render_template("/user-details.html", user=user)
 
-# @app.route('/user_edit')
-# def user_edit():
-#     """Return edit user"""
+@app.route('/<int:user_id>/edit')
+def user_edit_form(user_id):
+    """Return edit user form"""
+    user = User.query.get_or_404(user_id)
+    return render_template("/user-edit.html", user=user)
 
-#     return render_template("/user-edit.html")
+@app.route('/<int:user_id>/edit', methods=["POST"])
+def edit(user_id):
+    """edits the user on the db, returns to users list"""
+    user = User.query.get_or_404(user_id)
+    user.first_name = request.form['first_name']
+    user.last_name = request.form['last_name']
+    user.image_url = request.form['image_url']
+    
+    db.session.add(user)
+    db.session.commit()
+
+    return redirect("/users")
+
+@app.route('/<int:user_id>/delete')
+def delete(user_id):
+    
+    User.query.filter_by(id=user_id).delete()
+    
+    db.session.commit()
+
+    return redirect("/users")   

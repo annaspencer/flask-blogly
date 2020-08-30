@@ -4,7 +4,13 @@
 
 {% block content %}
 
-  <h2>I'm a header!</h2>
-  <p>I'm a paragraph!</p>
-
+  <h2>Edit User</h2>
+ 
+  <form action="/{{user.id}}/edit" method="POST">
+    <input type="text" name="first_name" value="{{user.first_name}}">
+    <input type="text" name="last_name" value="{{user.last_name}}">
+    <input type="url" name="image_url" value="{{user.image_url}}">
+     <button class="btn btn-success">Save</button>
+     <a href="/{{user.id}}" class="btn btn-warning" role="button">Cancel</a>
+   </form>
 {% endblock %}

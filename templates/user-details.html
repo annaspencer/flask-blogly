@@ -1,10 +1,14 @@
 {% extends 'base.html' %}
 
-{% block title %}My awesome page title{% endblock %}
+{% block title %}{{user.first_name}}{% endblock %}
 
 {% block content %}
 
-  <h2>I'm a header!</h2>
-  <p>I'm a paragraph!</p>
+ 
+  <h2>{{user.first_name}} {{user.last_name}}</h2>
+  <img src="{{user.image_url}}" alt="profile picture">
+  <a href="/{{user.id}}/edit" class="btn btn-primary" role="button">Edit User</a>
+  <a href="/{{user.id}}/delete" class="btn btn-danger" role="button">Delete User</a>
+  <a href="/users" class="btn btn-info" role="button">Back</a>
 
 {% endblock %}
