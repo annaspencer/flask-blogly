@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block title %}{{posts.title}}{% endblock %}
+
+{% block content %}
+
+ 
+  <h2>{{posts.title}} </h2>
+  <h4>{{posts.author.get_full_name()}}</h4>
+  <p>{{posts.content}}</p>
+  <p>Created at: {{posts.created_at}}</p>
+  
+  <a href="/posts/{{posts.id}}/edit" class="btn btn-primary" role="button">Edit Post</a>
+  <a href="/posts/{{posts.id}}/delete" class="btn btn-danger" role="button">Delete Post</a>
+  <a href="/posts" class="btn btn-info" role="button">Back</a>
+  
+  
+{% endblock %}

@@ -109,6 +109,27 @@ def show_post(post_id):
     """Return Post details"""
 
     posts = Post.query.get_or_404(post_id)
+
+    return render_template("/post-details.html", posts=posts)
+
+@app.route('/posts/<int:post_id>/edit')
+def post_edit_form(post_id):
+    """Return edit post form"""
+    posts = Post.query.get_or_404(post_id)
+    return render_template("/edit-post.html", posts=posts)
+
+@app.route('/posts/<int:post_id>/edit', methods=['POST'])
+def edit_post(post_id):
+    """Edit Post details"""
+
+    posts = Post.query.get_or_404(post_id)
+    
+    posts.title = request.form['title']
+    posts.content = request.form['content']
+    posts.created_at = datetime.datetime.now()
+
+    db.session.add(posts)
+    db.session.commit()
     
     return render_template("/post-details.html", posts=posts)
 
