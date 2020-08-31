@@ -11,8 +11,16 @@
   <a href="/{{user.id}}/delete" class="btn btn-danger" role="button">Delete User</a>
   <a href="/users" class="btn btn-info" role="button">Back</a>
   
-  {% for post in posts %}
-    <li><a href="/{{user.post.id}}">{{user.post.title}}</a></li>
-    {% endfor %}
-    <a href="/create-user" class="btn btn-info" role="button">Create Post</a>
+  
+
+   
+    <a href="/{{user.id}}/posts/new" class="btn btn-info" role="button">Create Post</a>
+
+    {% for post in posts %}
+    {% if post.author_code == user.id %}
+    <li><a href="/{{post.id}}">{{post.title}} {{post.author.get_full_name()}}</a></li>
+   
+   
+{% endif %}
+{% endfor %}
 {% endblock %}

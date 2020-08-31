@@ -3,6 +3,7 @@
 from flask import Flask, render_template, request, redirect
 from flask_debugtoolbar import DebugToolbarExtension
 from models import db, connect_db, User, Post
+import datetime
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = "891-327-672"
@@ -53,8 +54,8 @@ def created_user():
 def user_details(user_id):
     """Return user details"""
     user = User.query.get_or_404(user_id)
-    post = Post.query.get_or_404(author_id)
-    return render_template("/user-details.html", user=user)
+    posts = Post.query.all()
+    return render_template("/user-details.html", user=user, posts=posts)
 
 @app.route('/<int:user_id>/edit')
 def user_edit_form(user_id):
@@ -83,6 +84,33 @@ def delete(user_id):
     db.session.commit()
 
     return redirect("/users")   
+
+@app.route('/<int:user_id>/posts/new')
+def create_post_form(user_id):
+    user = User.query.get_or_404(user_id)
+
+    return render_template("/create-post.html", user=user )
+
+@app.route('/<int:user_id>/posts/new', methods=['POST'])
+def add_post_form(user_id):
+    user = User.query.get_or_404(user_id)
+    user.posts.title = request.form['title']
+    user.posts.content = request.form['content']
+    created_at = datetime.datetime.now()
+
+    new_post = Post(title=user.posts.title, content=user.posts.title, created_at=created_at, author_code=user_id)
+    db.session.add(new_post)
+    db.session.commit()
+
+    return redirect(f"/{user.id}")
+
+@app.route('/posts/<int:post_id>')
+def show_post(post_id):
+    """Return Post details"""
+
+    posts = Post.query.get_or_404(post_id)
+    
+    return render_template("/post-details.html", posts=posts)
 
 @app.route('/posts')
 def show_posts():
