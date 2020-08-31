@@ -133,6 +133,15 @@ def edit_post(post_id):
     
     return render_template("/post-details.html", posts=posts)
 
+@app.route('/posts/<int:post_id>/delete')
+def delete_post(post_id):
+    
+    Post.query.filter_by(id=post_id).delete()
+    
+    db.session.commit()
+
+    return redirect("/posts")  
+
 @app.route('/posts')
 def show_posts():
     """show all posts"""
