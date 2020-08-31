@@ -10,5 +10,9 @@
   <a href="/{{user.id}}/edit" class="btn btn-primary" role="button">Edit User</a>
   <a href="/{{user.id}}/delete" class="btn btn-danger" role="button">Delete User</a>
   <a href="/users" class="btn btn-info" role="button">Back</a>
-
+  
+  {% for post in posts %}
+    <li><a href="/{{user.post.id}}">{{user.post.title}}</a></li>
+    {% endfor %}
+    <a href="/create-user" class="btn btn-info" role="button">Create Post</a>
 {% endblock %}

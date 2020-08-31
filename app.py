@@ -2,7 +2,7 @@
 
 from flask import Flask, render_template, request, redirect
 from flask_debugtoolbar import DebugToolbarExtension
-from models import db, connect_db, User
+from models import db, connect_db, User, Post
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = "891-327-672"
@@ -53,6 +53,7 @@ def created_user():
 def user_details(user_id):
     """Return user details"""
     user = User.query.get_or_404(user_id)
+    post = Post.query.get_or_404(author_id)
     return render_template("/user-details.html", user=user)
 
 @app.route('/<int:user_id>/edit')
@@ -82,3 +83,10 @@ def delete(user_id):
     db.session.commit()
 
     return redirect("/users")   
+
+@app.route('/posts')
+def show_posts():
+    """show all posts"""
+    posts = Post.query.all()
+
+    return render_template('posts.html',posts = posts)
