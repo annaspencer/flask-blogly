@@ -2,7 +2,7 @@
 
 from flask import Flask, render_template, request, redirect
 from flask_debugtoolbar import DebugToolbarExtension
-from models import db, connect_db, User, Post
+from models import db, connect_db, User, Post, Tag, PostTag
 import datetime
 
 app = Flask(__name__)
@@ -148,3 +148,17 @@ def show_posts():
     posts = Post.query.all()
 
     return render_template('posts.html',posts = posts)
+
+@app.route('/tags')
+
+@app.route('/tags/<int:tag_id>')
+
+@app.route('tags/new')
+
+@app.route('/tags/new', methods=['POST'])
+
+@app.route('/tags/<int:tag_id>/edit')
+
+@app.route('/tags/<int:tag_id>/edit', methods=['POST'])
+
+

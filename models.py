@@ -60,6 +60,11 @@ class Post(db.Model):
                             db.ForeignKey('users.id'))
 
     author = db.relationship('User', backref='posts')
+
+    assignments = db.relationship('PostTag', backref="post")
+
+    tags = db.relationship(
+        'Tag', secondary="posts_tags", backref="posts")
    
     
     def __repr__(self):
@@ -72,3 +77,22 @@ class Post(db.Model):
         for post in all_posts:
             print(post.title, post.author.first_name)
     
+class Tag(db.Model):
+    __tablename__ = 'tags'
+
+    id = db.Column(db.Integer, 
+                        primary_key=True, 
+                        autoincrement=True)
+
+    tag_name = db.Column(db.Text, nullable=False, unique=True)
+
+    assignments = db.relationship('PostTag', backref="tag")
+
+class PostTag(db.Model):
+    __tablename__ = 'posts_tags'
+
+    post_id = db.Column(db.Integer, db.ForeignKey(
+        'posts.id'), primary_key=True)
+
+    tag_id = db.Column(db.Integer, db.ForeignKey(
+        'tags.id'), primary_key=True)
