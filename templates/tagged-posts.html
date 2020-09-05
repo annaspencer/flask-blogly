@@ -4,16 +4,18 @@
 
 {% block content %}
 
-  <h2>Posts</h2>
+  <h2>{{tag.tag_name}} Posts</h2>
 
     
-    {% for tag in tagss %}
-    <li><a href="/posts/{{post.id}}">{{post.title}} {{post.author.get_full_name()}}</a></li>
-    {% endfor %}
+  <ul>
+  {% for post in tag.posts %}
+  <li><a href="/posts/{{post.id }}">{{ post.title }}</a></li>
+  {% endfor %}
+</ul>
   
-<a href="/create-user" class="btn btn-info" role="button">Delete</a>
-<a href="/create-user" class="btn btn-info" role="button">Edit</a>
-<a href="/users" class="btn btn-info" role="button">Back to Tags</a>
+<a href='/tags/{{tag.id}}/delete' class="btn btn-info" role="button">Delete</a>
+<a href="/tags/{{tag.id}}/edit" class="btn btn-info" role="button">Edit</a>
+<a href="/tags" class="btn btn-info" role="button">Back to Tags</a>
 
   
 {% endblock %}

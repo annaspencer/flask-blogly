@@ -12,5 +12,13 @@
 
      <button class="btn btn-success">Save</button>
      <a href="/users" class="btn btn-warning" role="button">Cancel</a>
+
+     {% for tag in tags %}
+  
+     <input type="checkbox" id="tag_{{tag.id}}" name="tags" value="{{tag.id}}">{{ tag.tag_name }}
+     {% endfor %}
+
+    
+ 
    </form>
 {% endblock %}

@@ -61,11 +61,10 @@ class Post(db.Model):
 
     author = db.relationship('User', backref='posts')
 
-    assignments = db.relationship('PostTag', backref="post")
+    assignments = db.relationship('PostTag', backref='post')
 
     tags = db.relationship(
         'Tag', secondary="posts_tags", backref="posts")
-   
     
     def __repr__(self):
         p =self
@@ -86,8 +85,13 @@ class Tag(db.Model):
 
     tag_name = db.Column(db.Text, nullable=False, unique=True)
 
-    assignments = db.relationship('PostTag', backref="tag")
-
+    # posts = db.relationship(
+    #     'Post',
+    #     secondary="posts_tags",
+    #     # cascade="all,delete",
+    #     backref="tags",
+    # )
+   
 class PostTag(db.Model):
     __tablename__ = 'posts_tags'
 

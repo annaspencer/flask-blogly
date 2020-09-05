@@ -8,6 +8,9 @@
   <h2>{{posts.title}} </h2>
   <h4>{{posts.author.get_full_name()}}</h4>
   <p>{{posts.content}}</p>
+  {% for tag in posts.tags %}
+  <li><a href="/tags/{{tag.id}}">{{tag.tag_name}}</a></li>
+  {% endfor %}
   <p>Created at: {{posts.created_at}}</p>
   
   <a href="/posts/{{posts.id}}/edit" class="btn btn-primary" role="button">Edit Post</a>
